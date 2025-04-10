@@ -84,6 +84,14 @@ namespace TestTechnical
 				// Rebind the grid to reflect the changes
 				gv_salesOrder.DataBind();
 			}
+
+			if (e.CommandName == "EditSalesOrder")
+			{
+				int index = Convert.ToInt32(e.CommandArgument);
+				GridViewRow row = gv_salesOrder.Rows[index];
+				int salesOrderId = Convert.ToInt32(gv_salesOrder.DataKeys[index].Value);
+				Response.Redirect("EditSalesOrder.aspx?salesOrderId=" + salesOrderId);
+			}
 		}
 
 		private void DeleteSalesOrder(int salesOrderId)
