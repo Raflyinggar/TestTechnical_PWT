@@ -73,7 +73,7 @@
             <div class="col-md-12">
                 <div class="row px-4 py-4">
 
-                    <asp:Label runat="server" ID="Order_Id_So" Visible="false" ForeColor="Black"/>
+                    <asp:Label runat="server" ID="Order_Id_So" Visible="false" ForeColor="Black" />
 
 
                     <div class="col-md-6">
@@ -89,7 +89,11 @@
                         <div class="form-group row align-items-center">
                             <asp:Label runat="server" CssClass="col-sm-4 col-form-label" Text="Customer" ForeColor="Black"></asp:Label>
                             <div class="col-sm-8">
-                                <asp:DropDownList runat="server" ID="dd_customer" CssClass="form-control" />
+                                <asp:DropDownList runat="server" ID="dd_customer" CssClass="form-control" DataSourceID="SDS_Customer" 
+                                                    DataTextField="CUSTOMER_NAME" DataValueField="COM_CUSTOMER_ID"/>
+                                <asp:SqlDataSource ID="SDS_Customer" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>" 
+                                    SelectCommand="SELECT TOP (1000) [COM_CUSTOMER_ID], [CUSTOMER_NAME] FROM [Test_Profescipta].[dbo].[COM_CUSTOMER]"></asp:SqlDataSource>
+
                             </div>
                         </div>
                     </div>
