@@ -89,9 +89,9 @@
                         <div class="form-group row align-items-center">
                             <asp:Label runat="server" CssClass="col-sm-4 col-form-label" Text="Customer" ForeColor="Black"></asp:Label>
                             <div class="col-sm-8">
-                                <asp:DropDownList runat="server" ID="dd_customer" CssClass="form-control" DataSourceID="SDS_Customer" 
-                                                    DataTextField="CUSTOMER_NAME" DataValueField="COM_CUSTOMER_ID"/>
-                                <asp:SqlDataSource ID="SDS_Customer" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>" 
+                                <asp:DropDownList runat="server" ID="dd_customer" CssClass="form-control" DataSourceID="SDS_Customer"
+                                    DataTextField="CUSTOMER_NAME" DataValueField="COM_CUSTOMER_ID" />
+                                <asp:SqlDataSource ID="SDS_Customer" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
                                     SelectCommand="SELECT TOP (1000) [COM_CUSTOMER_ID], [CUSTOMER_NAME] FROM [Test_Profescipta].[dbo].[COM_CUSTOMER]"></asp:SqlDataSource>
 
                             </div>
@@ -130,14 +130,14 @@
         <!--Button Add Item-->
         <div class="col-md-12 d-flex p-3">
             <div>
-                <asp:Button runat="server" ID="btn_addNewSales" Text="Add Item" CssClass="btn" BackColor="#990033" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_addNewItem" Text="Add Item" CssClass="btn" OnClick="btn_addNewItem_Click" BackColor="#990033" ForeColor="White" />
             </div>
         </div>
 
         <div class="col-md-12">
             <!-- GridView -->
-            <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ITEM_ID"
-                AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SO_Item" BorderStyle="None">
+            <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ORDER_ID"
+                AutoGenerateColumns="False" Width="100%" BorderStyle="None" DataSourceID="SDS_SO_Item">
                 <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
                 <RowStyle HorizontalAlign="Center" />
 
@@ -155,22 +155,46 @@
                                 CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
                             <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
                                 CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:LinkButton runat="server"  ID="btn_saveEdit" CommandName="SaveEditSalesOrder" CssClass="fas fa-file-alt" Visible="false"/>
+                            <asp:LinkButton runat="server"  ID="btn_cancelEdit" CommandName="CancelEditSalesOrder" CssClass="fas fa-trash-alt" Visible="false" />
+                        </EditItemTemplate>
+                    </asp:TemplateField>
 
-                            <asp:LinkButton runat="server" ID="btn_saveEdit" CssClass="fas fa-file-alt" Visible="false"
-                                CommandName="SaveEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
-                            <asp:LinkButton runat="server" ID="btn_cancelEdit" CssClass="fas fa-trash-alt" Visible="false"
-                                CommandName="CancelEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                    <asp:TemplateField HeaderText="ID" Visible="false">
+                        <ItemTemplate>
+                            <asp:Label ID="tb_so_item_id" runat="server" Visible="false" Text='<%# Bind("SO_ITEM_ID") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
 
-                    <asp:BoundField DataField="ITEM_NAME" HeaderText="ITEM NAME" />
-                    <asp:BoundField DataField="QUANTITY" HeaderText="QUANTITY" />
+                    <asp:TemplateField HeaderText="ITEM NAME">
+                        <ItemTemplate>
+                            <asp:Label ID="lbl_item_name" runat="server" Text='<%# Bind("ITEM_NAME") %>'></asp:Label>
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="tb_item_name" Text='<%# Bind("ITEM_NAME") %>' runat="server" CssClass="form-control" />
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="QUANTITY">
+                        <ItemTemplate>
+                            <asp:Label ID="lbl_quantity" runat="server" Text='<%# Bind("QUANTITY") %>'></asp:Label>
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="tb_quantity" Text='<%# Bind("QUANTITY") %>' runat="server" CssClass="form-control" />
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
 
                     <asp:TemplateField HeaderText="PRICE">
                         <ItemTemplate>
                             <asp:Label runat="server" ID="lbl_price"
                                 Text='<%# string.Format("{0:N2}", Eval("PRICE")).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
                         </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="tb_price" Text='<%# Bind("PRICE") %>' runat="server" CssClass="form-control" />
+                        </EditItemTemplate>
                     </asp:TemplateField>
 
                     <asp:TemplateField HeaderText="TOTAL" FooterStyle-HorizontalAlign="Right">
@@ -178,6 +202,10 @@
                             <asp:Label runat="server" ID="lbl_total"
                                 Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
                         </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="tb_total" Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>'
+                                runat="server" CssClass="form-control" />
+                        </EditItemTemplate>
 
                         <FooterTemplate>
                             <asp:Label ID="lblFooterTotalAmount" runat="server" />
@@ -187,12 +215,22 @@
                 </Columns>
                 <RowStyle BackColor="White" />
             </asp:GridView>
+
             <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
                 SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]
-                                WHERE SO_ORDER_ID = @SO_ID">
+                                WHERE SO_ORDER_ID = @SO_ID"
+                UpdateCommand="UPDATE [Test_Profescipta].[dbo].[SO_ITEM] SET [ITEM_NAME] = @ITEM_NAME, [QUANTITY] = @QUANTITY, [PRICE] = @PRICE  WHERE [SO_ITEM_ID] = @SO_ITEM_ID">
+
                 <SelectParameters>
                     <asp:ControlParameter ControlID="Order_Id_So" Name="SO_ID" PropertyName="text" Type="String" />
                 </SelectParameters>
+                <UpdateParameters>
+                    <asp:Parameter Name="ITEM_NAME" Type="String" />
+                    <asp:Parameter Name="QUANTITY" Type="String" />
+                    <asp:Parameter Name="PRICE" Type="String" />
+                    <asp:Parameter Name="SO_ITEM_ID" Type="String" />
+                </UpdateParameters>
+
             </asp:SqlDataSource>
         </div>
 

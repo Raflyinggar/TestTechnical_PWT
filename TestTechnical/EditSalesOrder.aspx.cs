@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -13,15 +14,13 @@ namespace TestTechnical
 	{
 		private SqlCommand cmd;
 		private SqlConnection conn;
+		string ID_ORDER;
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnections"].ToString());
 
-
-			string ID_ORDER = Request.QueryString["salesOrdersId"];
-
-			Response.Write(ID_ORDER);
+			ID_ORDER = Request.QueryString["salesOrdersId"];
 
 			if (!Page.IsPostBack)
 			{
@@ -84,6 +83,45 @@ namespace TestTechnical
 				}
 
 			}
+		}
+
+
+		private void addItemNew()
+		{
+			try
+			{
+				string query = @"INSERT INTO [dbo].[SO_ITEM]
+           ([SO_ORDER_ID]) VALUES (@soOrderId)";
+
+				cmd = new SqlCommand(query, conn);
+
+				cmd.Parameters.AddWithValue("@soOrderId", ID_ORDER);
+
+
+				conn.Open();
+				cmd.ExecuteNonQuery();
+
+			}
+
+			catch (SqlException sqlEx)
+			{
+				throw new Exception(sqlEx.Message);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			finally
+			{
+				conn.Close();
+				cmd.Dispose();
+			}
+		}
+
+		protected void btn_addNewItem_Click(object sender, EventArgs e)
+		{
+			addItemNew();
+			gv_so_item.DataBind();
 		}
 	}
 }
