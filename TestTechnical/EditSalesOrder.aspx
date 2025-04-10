@@ -150,11 +150,18 @@
 
                 <asp:BoundField DataField="ITEM_NAME" HeaderText="ITEM NAME" />
                 <asp:BoundField DataField="QUANTITY" HeaderText="QUANTITY" />
-                <asp:BoundField DataField="PRICE" HeaderText="PRICE" />
+
+                <asp:TemplateField HeaderText="PRICE">
+                    <ItemTemplate>
+                        <asp:Label runat="server" ID="lbl_price" 
+                            Text='<%# string.Format("{0:N2}", Eval("PRICE")).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
 
                 <asp:TemplateField HeaderText="TOTAL" FooterStyle-HorizontalAlign="Right">
                     <ItemTemplate>
-                        <%# Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE")) %>
+                        <asp:Label runat="server" ID="lbl_total" 
+                            Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
                     </ItemTemplate>
                     <FooterTemplate>
                         <asp:Label ID="lblFooterTotalAmount" runat="server" />
