@@ -123,5 +123,25 @@ namespace TestTechnical
 			addItemNew();
 			gv_so_item.DataBind();
 		}
+
+
+
+		protected void gv_so_item_RowEditing(object sender, GridViewEditEventArgs e)
+		{
+			gv_so_item.EditIndex = e.NewEditIndex;
+			gv_so_item.DataBind();
+		}
+
+		protected void gv_so_item_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+		{
+			gv_so_item.EditIndex = -1;
+			gv_so_item.DataBind();
+		}
+
+		protected void gv_so_item_RowUpdating(object sender, GridViewUpdateEventArgs e)
+		{
+			gv_so_item.EditIndex = -1;
+			gv_so_item.DataBind();
+		}
 	}
 }

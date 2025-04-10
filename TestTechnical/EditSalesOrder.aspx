@@ -136,8 +136,8 @@
 
         <div class="col-md-12">
             <!-- GridView -->
-            <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ORDER_ID"
-                AutoGenerateColumns="False" Width="100%" BorderStyle="None" DataSourceID="SDS_SO_Item">
+            <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ITEM_ID"
+                            AutoGenerateColumns="False" Width="100%" BorderStyle="None" DataSourceID="SDS_SO_Item">
                 <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
                 <RowStyle HorizontalAlign="Center" />
 
@@ -149,16 +149,14 @@
                     </asp:TemplateField>
 
                     <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
-
                         <ItemTemplate>
-                            <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
-                                CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
-                            <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
-                                CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                            <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" CommandName="Edit" />
+                            <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" CommandName="Delete"
+                                            OnClientClick="return confirm('Data Akan Terhapus?');"/>
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:LinkButton runat="server"  ID="btn_saveEdit" CommandName="SaveEditSalesOrder" CssClass="fas fa-file-alt" Visible="false"/>
-                            <asp:LinkButton runat="server"  ID="btn_cancelEdit" CommandName="CancelEditSalesOrder" CssClass="fas fa-trash-alt" Visible="false" />
+                            <asp:LinkButton runat="server" ID="btn_saveEdit" CommandName="Update" CssClass="fas fa-file-archive" />
+                            <asp:LinkButton runat="server" ID="btn_cancelEdit" CommandName="Cancel" CssClass="fas fa-close" />
                         </EditItemTemplate>
                     </asp:TemplateField>
 
@@ -202,10 +200,6 @@
                             <asp:Label runat="server" ID="lbl_total"
                                 Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
                         </ItemTemplate>
-                        <EditItemTemplate>
-                            <asp:TextBox ID="tb_total" Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>'
-                                runat="server" CssClass="form-control" />
-                        </EditItemTemplate>
 
                         <FooterTemplate>
                             <asp:Label ID="lblFooterTotalAmount" runat="server" />
@@ -219,17 +213,23 @@
             <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
                 SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]
                                 WHERE SO_ORDER_ID = @SO_ID"
-                UpdateCommand="UPDATE [Test_Profescipta].[dbo].[SO_ITEM] SET [ITEM_NAME] = @ITEM_NAME, [QUANTITY] = @QUANTITY, [PRICE] = @PRICE  WHERE [SO_ITEM_ID] = @SO_ITEM_ID">
+                UpdateCommand="UPDATE [Test_Profescipta].[dbo].[SO_ITEM] SET [ITEM_NAME] = @ITEM_NAME, [QUANTITY] = @QUANTITY, [PRICE] = @PRICE  WHERE [SO_ITEM_ID] = @SO_ITEM_ID"
+                DeleteCommand="DELETE FROM [Test_Profescipta].[dbo].[SO_ITEM] WHERE [SO_ITEM_ID] = @SO_ITEM_ID">
 
                 <SelectParameters>
                     <asp:ControlParameter ControlID="Order_Id_So" Name="SO_ID" PropertyName="text" Type="String" />
                 </SelectParameters>
+
                 <UpdateParameters>
                     <asp:Parameter Name="ITEM_NAME" Type="String" />
                     <asp:Parameter Name="QUANTITY" Type="String" />
                     <asp:Parameter Name="PRICE" Type="String" />
                     <asp:Parameter Name="SO_ITEM_ID" Type="String" />
                 </UpdateParameters>
+
+                <DeleteParameters>
+                    <asp:Parameter Name="SO_ITEM_ID" Type="String" />
+                </DeleteParameters>
 
             </asp:SqlDataSource>
         </div>
