@@ -12,7 +12,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Dashboard</title>
+    <title>Dashboard Sales Order</title>
 
     <!-- Custom fonts for this template-->
     <link href="Theme/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -80,16 +80,16 @@
                 </div>
                 <div class="col-md-12 d-flex p-3">
                     <div>
-                        <asp:Button runat="server" ID="btn_addNewSales" Text="Add New Data" CssClass="btn" BackColor="#990033" ForeColor="White" />
-                        <asp:Button runat="server" ID="btn_exportToExcel" Text="Export To Excel" CssClass="btn" BackColor="#000066" ForeColor="White" />
+                        <asp:Button runat="server" ID="btn_addNewSales" Text="Add New Data" OnClick="btn_addNewSales_Click" CssClass="btn" BackColor="#990033" ForeColor="White" />
+                        <asp:Button runat="server" ID="btn_exportToExcel" Text="Export To Excel" OnClick="btn_exportToExcel_Click" CssClass="btn" BackColor="#000066" ForeColor="White" />
                     </div>
                 </div>
 
                 <!-- GridView -->
-                <asp:GridView ID="gv_salesOrder" runat="server" AllowPaging="true" DataKeyNames="ORDER_NO"
+                <asp:GridView runat="server" ID="gv_salesOrder" AllowPaging="true" DataKeyNames="ORDER_NO"
                     AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SalesOrder" BorderStyle="None">
-                    <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center"  />
-                    <RowStyle HorizontalAlign="Center"/>
+                    <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
+                    <RowStyle HorizontalAlign="Center" />
 
                     <Columns>
                         <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center" ItemStyle-Width="5%">
@@ -119,12 +119,41 @@
                         <asp:ControlParameter ControlID="tb_searchDate" Name="ORDER_DATE" Type="String" />
                     </FilterParameters>
                     <SelectParameters>
-                        <asp:ControlParameter ControlID="tb_search" Name="search" PropertyName="text" Type="String" DefaultValue="%"/>
+                        <asp:ControlParameter ControlID="tb_search" Name="search" PropertyName="text" Type="String" DefaultValue="%" />
                     </SelectParameters>
                 </asp:SqlDataSource>
-
             </div>
         </div>
+        <asp:Panel runat="server" Visible="false">
+            <div>
+                <asp:GridView runat="server" ID="gv_print_salesOrder" DataKeyNames="ORDER_NO"
+                    AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SalesOrder" BorderStyle="None">
+
+                    <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
+                    <RowStyle HorizontalAlign="Center" />
+
+                    <Columns>
+                        <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center" ItemStyle-Width="5%">
+                            <ItemTemplate>
+                                <asp:Label ID="lblRowNumber" Text='<%# Container.DataItemIndex + 1 %>' runat="server" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
+                            <ItemTemplate>
+                                <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" />
+                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" CommandName="DeleteTR" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                        <asp:BoundField DataField="ORDER_NO" HeaderText="Order ID" />
+                        <asp:BoundField DataField="ORDER_DATE" HeaderText="Order Date" DataFormatString="{0:dd/MM/yyyy}" />
+                        <asp:BoundField DataField="ADDRESS" HeaderText="Customer" />
+                    </Columns>
+                    <RowStyle BackColor="White" />
+                </asp:GridView>
+            </div>
+        </asp:Panel>
     </form>
 
     <!-- Bootstrap core JavaScript-->
