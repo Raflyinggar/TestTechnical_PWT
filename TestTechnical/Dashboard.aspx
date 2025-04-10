@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="TestTechnical.Dashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="TestTechnical.Dashboard" EnableEventValidation="false" %>
 
 
 <!DOCTYPE html>
@@ -86,7 +86,7 @@
                 </div>
 
                 <!-- GridView -->
-                <asp:GridView runat="server" ID="gv_salesOrder" AllowPaging="true" DataKeyNames="ORDER_NO"
+                <asp:GridView runat="server" ID="gv_salesOrder" AllowPaging="true" DataKeyNames="ORDER_NO" OnRowCommand="gv_salesOrder_RowCommand"
                     AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SalesOrder" BorderStyle="None">
                     <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
                     <RowStyle HorizontalAlign="Center" />
@@ -101,7 +101,8 @@
                         <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
                             <ItemTemplate>
                                 <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" />
-                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" CommandName="DeleteTR" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
+                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" 
+                                    CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
 
