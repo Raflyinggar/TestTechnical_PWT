@@ -86,10 +86,10 @@ namespace TestTechnical
 
 			if (e.CommandName == "EditSalesOrder")
 			{
-				int index = Convert.ToInt32(e.CommandArgument);
-				int salesOrderId = index;
+				string Id_Order = e.CommandArgument.ToString();
 
-				Response.Redirect("EditSalesOrder.aspx?salesOrderId=" + salesOrderId);
+				string uri = "EditSalesOrder.aspx?salesOrdersId=" + Id_Order;
+				Response.Redirect(uri);
 			}
 		}
 

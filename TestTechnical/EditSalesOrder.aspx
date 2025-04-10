@@ -20,7 +20,7 @@
 
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet" /> 
+        rel="stylesheet" />
 
     <!-- Custom styles for this template-->
     <link href="Theme/css/sb-admin-2.min.css" rel="stylesheet" />
@@ -73,6 +73,9 @@
             <div class="col-md-12">
                 <div class="row px-4 py-4">
 
+                    <asp:Label runat="server" ID="Order_Id_So" Visible="false" ForeColor="Black"/>
+
+
                     <div class="col-md-6">
                         <div class="form-group row align-items-center">
                             <asp:Label runat="server" CssClass="col-sm-4 col-form-label" Text="Sales Order Number" ForeColor="Black"></asp:Label>
@@ -95,7 +98,7 @@
                         <div class="form-group row align-items-center mt-3">
                             <asp:Label runat="server" CssClass="col-sm-4 col-form-label" Text="Order Date" ForeColor="Black"></asp:Label>
                             <div class="col-sm-8">
-                                <asp:TextBox runat="server" ID="tb_orderDate" CssClass="form-control" />
+                                <asp:TextBox runat="server" ID="tb_orderDate" TextMode="DateTimeLocal" CssClass="form-control" />
                             </div>
                         </div>
                     </div>
@@ -181,7 +184,12 @@
                 <RowStyle BackColor="White" />
             </asp:GridView>
             <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
-                SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]"></asp:SqlDataSource>
+                SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]
+                                WHERE SO_ORDER_ID = @SO_ID">
+                <SelectParameters>
+                    <asp:ControlParameter ControlID="Order_Id_So" Name="SO_ID" PropertyName="text" Type="String" />
+                </SelectParameters>
+            </asp:SqlDataSource>
         </div>
 
         <!--Button Add Item-->
@@ -191,7 +199,8 @@
                 <asp:Button runat="server" ID="btn_cancelAll" Text="Cancel" CssClass="btn" BackColor="#000066" ForeColor="White" />
             </div>
         </div>
-
+        <div>
+        </div>
     </form>
 
     <!-- Bootstrap core JavaScript-->
