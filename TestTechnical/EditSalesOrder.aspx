@@ -113,10 +113,15 @@
         </div>
 
         <!--Detail Line-->
-        <div class="row line-panel px-3 py-2 mb-3">
+        <div class="row line-panel px-3 py-2 mb-2">
             <div class="col-md-12">
                 <asp:Label runat="server" Text="Detail Item Informartion " ForeColor="White" Font-Bold="true" Font-Size="Large"></asp:Label>
                 <i class="fas fa-angles-down text-white"></i>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex p-3">
+            <div>
+                <asp:Button runat="server" ID="btn_addNewSales" Text="Add Item" CssClass="btn" BackColor="#990033" ForeColor="White" />
             </div>
         </div>
 
@@ -134,6 +139,7 @@
                 </asp:TemplateField>
 
                 <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
+
                     <ItemTemplate>
                         <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
                             CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
@@ -144,7 +150,6 @@
                             CommandName="SaveEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
                         <asp:LinkButton runat="server" ID="btn_cancelEdit" CssClass="fas fa-trash-alt" Visible="false"
                             CommandName="CancelEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
-
                     </ItemTemplate>
                 </asp:TemplateField>
 
@@ -153,19 +158,21 @@
 
                 <asp:TemplateField HeaderText="PRICE">
                     <ItemTemplate>
-                        <asp:Label runat="server" ID="lbl_price" 
+                        <asp:Label runat="server" ID="lbl_price"
                             Text='<%# string.Format("{0:N2}", Eval("PRICE")).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
 
                 <asp:TemplateField HeaderText="TOTAL" FooterStyle-HorizontalAlign="Right">
                     <ItemTemplate>
-                        <asp:Label runat="server" ID="lbl_total" 
+                        <asp:Label runat="server" ID="lbl_total"
                             Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
                     </ItemTemplate>
+
                     <FooterTemplate>
                         <asp:Label ID="lblFooterTotalAmount" runat="server" />
                     </FooterTemplate>
+
                 </asp:TemplateField>
             </Columns>
             <RowStyle BackColor="White" />
