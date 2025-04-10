@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Dashboard.aspx.cs" Inherits="TestTechnical.Dashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="TestTechnical.Dashboard" %>
 
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="Theme/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -53,11 +53,12 @@
             </div>
         </div>
 
+        <!-- Body Panel -->
         <div class="row body-panel">
             <div class="col-md-12">
                 <div class="d-flex flex-wrap align-items-center p-5 border-search">
                     <div class="col-md-2">
-                        <asp:Label runat="server" class="form-label" Text="Keywords" ForeColor="Black"></asp:Label>
+                        <asp:Label runat="server" CssClass="form-label" Text="Keywords" ForeColor="Black" />
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -84,31 +85,42 @@
                     </div>
                 </div>
 
-                <!-- Tambahkan GridView -->
-                <asp:GridView runat="server" ID="gv_salesOrder" CssClass="table table-bordered table-striped bg-white"
-                    AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SalesOrder">
+                <!-- GridView -->
+                <asp:GridView ID="gv_salesOrder" runat="server" AllowPaging="true" DataKeyNames="ORDER_NO"
+                    AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SalesOrder" BorderStyle="None">
+                    <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center"  />
+                    <RowStyle HorizontalAlign="Center"/>
+
                     <Columns>
-                        <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center">
+                        <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center" ItemStyle-Width="5%">
                             <ItemTemplate>
                                 <asp:Label ID="lblRowNumber" Text='<%# Container.DataItemIndex + 1 %>' runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="5%">
+                        <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
                             <ItemTemplate>
-                                <asp:Button runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" />
-                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
-                                    CommandName="DeleteTR" CommandArgument='<%# Eval("OrderID") %>' />
+                                <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" />
+                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" CommandName="DeleteTR" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:BoundField DataField="OrderID" HeaderText="Order ID" />
-                        <asp:BoundField DataField="OrderDate" HeaderText="Order Date" />
-                        <asp:BoundField DataField="CustomerName" HeaderText="Customer" />
+                        <asp:BoundField DataField="ORDER_NO" HeaderText="Order ID" />
+                        <asp:BoundField DataField="ORDER_DATE" HeaderText="Order Date" DataFormatString="{0:dd/MM/yyyy}" />
+                        <asp:BoundField DataField="ADDRESS" HeaderText="Customer" />
                     </Columns>
+                    <RowStyle BackColor="White" />
                 </asp:GridView>
                 <asp:SqlDataSource runat="server" ID="SDS_SalesOrder" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
-                    SelectCommand="SELECT TOP (1000) [SO_ORDER_ID] ,[ORDER_NO] ,[ORDER_DATE],[COM_CUSTOMER_ID],[ADDRESS] FROM [Test_Profescipta].[dbo].[SO_ORDER]">   
+                    SelectCommand="SELECT [SO_ORDER_ID], [ORDER_NO], CONVERT(varchar(10), [ORDER_DATE],120) as ORDER_DATE, [COM_CUSTOMER_ID], [ADDRESS] FROM [Test_Profescipta].[dbo].[SO_ORDER]
+                                   WHERE ([ORDER_NO]LIKE '%'+ @search +'%' OR [ADDRESS] LIKE '%'+ @search +'%')"
+                    FilterExpression=" ORDER_DATE LIKE '{0}'">
+                    <FilterParameters>
+                        <asp:ControlParameter ControlID="tb_searchDate" Name="ORDER_DATE" Type="String" />
+                    </FilterParameters>
+                    <SelectParameters>
+                        <asp:ControlParameter ControlID="tb_search" Name="search" PropertyName="text" Type="String" DefaultValue="%"/>
+                    </SelectParameters>
                 </asp:SqlDataSource>
 
             </div>
