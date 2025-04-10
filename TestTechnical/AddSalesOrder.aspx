@@ -213,9 +213,13 @@
 
             <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
                 SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]
-                          WHERE SO_ORDER_ID = '0'"
+                          WHERE SO_ORDER_ID = @IDSO"
                 UpdateCommand="UPDATE [Test_Profescipta].[dbo].[SO_ITEM] SET [ITEM_NAME] = @ITEM_NAME, [QUANTITY] = @QUANTITY, [PRICE] = @PRICE  WHERE [SO_ITEM_ID] = @SO_ITEM_ID"
                 DeleteCommand="DELETE FROM [Test_Profescipta].[dbo].[SO_ITEM] WHERE [SO_ITEM_ID] = @SO_ITEM_ID">
+
+                <SelectParameters>
+                    <asp:ControlParameter ControlID="Order_Id_So" Name="IDSO" PropertyName="text" Type="String" />
+                </SelectParameters>
 
                 <UpdateParameters>
                     <asp:Parameter Name="ITEM_NAME" Type="String" />
@@ -234,8 +238,8 @@
         <!--Button Add Item-->
         <div class="col-md-12 d-flex p-3 fa-align-center">
             <div>
-                <asp:Button runat="server" ID="btn_saveAll" Text="Save" CssClass="btn" BackColor="#990033" ForeColor="White" />
-                <asp:Button runat="server" ID="btn_cancelAll" Text="Cancel" CssClass="btn" BackColor="#000066" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_saveAll" Text="Save" OnClick="btn_saveAll_Click" CssClass="btn" BackColor="#990033" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_cancelAll" Text="Cancel" OnClick="btn_cancelAll_Click" CssClass="btn" BackColor="#000066" ForeColor="White" />
             </div>
         </div>
     </form>

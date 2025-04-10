@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -13,16 +14,6 @@ namespace TestTechnical
 	{
 		private SqlCommand cmd;
 		private SqlConnection conn;
-
-
-		//if (!string.IsNullOrWhiteSpace(tb_so_number.Text))
-		//{
-
-		//}
-		//else
-		//{
-		//	Response.Write("<script>alert('Please fill in the Sales Order Number');</script>");
-		//}
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -37,15 +28,62 @@ namespace TestTechnical
 
 		protected void btn_addNewItem_Click(object sender, EventArgs e)
 		{
-			insertItem_SO();
+			if (!string.IsNullOrWhiteSpace(tb_so_number.Text) && !string.IsNullOrWhiteSpace(tb_orderDate.Text))
+			{
+				insertData_SO();
 
-			gv_so_item.DataSourceID = "SDS_SO_Item";
-			gv_so_item.DataBind();
+				Order_Id_So.Text = GetIdSalesOrders();
+
+				insertItem_SO(Order_Id_So.Text);
+			
+				gv_so_item.DataBind();
+
+
+			}
+			else
+			{
+				Response.Write("<script>alert('ORDER NO dan ORDER DATE Wajib Di isi !!');</script>");
+			}
 
 		}
 
+		private string GetIdSalesOrders()
+		{
+			string soOrderId = string.Empty;
+			string query = "SELECT [SO_ORDER_ID] FROM [Test_Profescipta].[dbo].[SO_ORDER] WHERE ORDER_NO = @salesOrderNo";
+
+			using (SqlCommand cmd = new SqlCommand(query, conn))
+			{
+				cmd.Parameters.AddWithValue("@salesOrderNo", tb_so_number.Text.Trim());
+
+				try
+				{
+					conn.Open();
+					object result = cmd.ExecuteScalar();
+					conn.Close();
+
+					if (result != null)
+					{
+						soOrderId = result.ToString();
+					}
+				}
+				catch (Exception ex)
+				{
+					throw new Exception("Error saat mengambil SO_ORDER_ID: " + ex.Message);
+				}
+				finally
+				{
+					if (conn.State == ConnectionState.Open)
+						conn.Close();
+				}
+			}
+
+			return soOrderId;
+		}
+
+
 		//Function Insert Item Sales Order
-		private void insertItem_SO()
+		private void insertItem_SO(string soId)
 		{
 			
 			try
@@ -53,7 +91,7 @@ namespace TestTechnical
 				string updateSO = @"INSERT INTO SO_ITEM (SO_ORDER_ID)
                          VALUES (@soOrderId)";
 				cmd = new SqlCommand(updateSO, conn);
-				cmd.Parameters.AddWithValue("@soOrderId", 0);
+				cmd.Parameters.AddWithValue("@soOrderId", soId);
 
 
 				conn.Open();
@@ -79,6 +117,7 @@ namespace TestTechnical
 
 			}
 		}
+		
 
 		//Function Insert Data Sales Order
 		private int insertData_SO()
@@ -98,7 +137,7 @@ namespace TestTechnical
 		   ,@address)";
 				cmd = new SqlCommand(updateSO, conn);
 				cmd.Parameters.AddWithValue("@soNumber", tb_so_number.Text);
-				cmd.Parameters.AddWithValue("@orderDate", tb_orderDate.Text);
+				cmd.Parameters.AddWithValue("@orderDate", Convert.ToDateTime(tb_orderDate.Text));
 				cmd.Parameters.AddWithValue("@customerId", dd_customer.SelectedValue);
 				cmd.Parameters.AddWithValue("@address", tb_address.Text);
 
@@ -126,5 +165,23 @@ namespace TestTechnical
 			return soOrderId;
 		}
 
+		protected void btn_saveAll_Click(object sender, EventArgs e)
+		{
+			if (!string.IsNullOrWhiteSpace(tb_so_number.Text) && !string.IsNullOrWhiteSpace(tb_orderDate.Text))
+			{
+				insertData_SO();
+				Response.Redirect("Dashboard.aspx");
+
+			}
+			else
+			{
+				Response.Write("<script>alert('ORDER NO dan ORDER DATE Wajib Di isi !!');</script>");
+			}
+		}
+
+		protected void btn_cancelAll_Click(object sender, EventArgs e)
+		{
+			Response.Redirect("Dashboard.aspx");
+		}
 	}
 }
