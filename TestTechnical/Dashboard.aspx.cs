@@ -77,19 +77,18 @@ namespace TestTechnical
 			if (e.CommandName == "DeleteSalesOrder")
 			{
 				int index = Convert.ToInt32(e.CommandArgument);
-				GridViewRow row = gv_salesOrder.Rows[index];
-				int salesOrderId = Convert.ToInt32(gv_salesOrder.DataKeys[index].Value);
-				// Call the method to delete the sales order
+				int salesOrderId = index;
+
 				DeleteSalesOrder(salesOrderId);
-				// Rebind the grid to reflect the changes
+
 				gv_salesOrder.DataBind();
 			}
 
 			if (e.CommandName == "EditSalesOrder")
 			{
 				int index = Convert.ToInt32(e.CommandArgument);
-				GridViewRow row = gv_salesOrder.Rows[index];
-				int salesOrderId = Convert.ToInt32(gv_salesOrder.DataKeys[index].Value);
+				int salesOrderId = index;
+
 				Response.Redirect("EditSalesOrder.aspx?salesOrderId=" + salesOrderId);
 			}
 		}
