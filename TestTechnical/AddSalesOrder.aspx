@@ -130,7 +130,7 @@
         <!--Button Add Item-->
         <div class="col-md-12 d-flex p-3">
             <div>
-                <asp:Button runat="server" ID="btn_addNewItem" Text="Add Item" CssClass="btn" BackColor="#990033" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_addNewItem" Text="Add Item" OnClick="btn_addNewItem_Click" CssClass="btn" BackColor="#990033" ForeColor="White" />
             </div>
         </div>
 
@@ -213,13 +213,9 @@
 
             <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
                 SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]
-                          WHERE SO_ORDER_ID = @SO_ID"
+                          WHERE SO_ORDER_ID = '0'"
                 UpdateCommand="UPDATE [Test_Profescipta].[dbo].[SO_ITEM] SET [ITEM_NAME] = @ITEM_NAME, [QUANTITY] = @QUANTITY, [PRICE] = @PRICE  WHERE [SO_ITEM_ID] = @SO_ITEM_ID"
                 DeleteCommand="DELETE FROM [Test_Profescipta].[dbo].[SO_ITEM] WHERE [SO_ITEM_ID] = @SO_ITEM_ID">
-
-                <SelectParameters>
-                    <asp:ControlParameter ControlID="Order_Id_So" Name="SO_ID" PropertyName="text" Type="String" />
-                </SelectParameters>
 
                 <UpdateParameters>
                     <asp:Parameter Name="ITEM_NAME" Type="String" />
