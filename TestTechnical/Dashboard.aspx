@@ -100,9 +100,10 @@
 
                         <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
                             <ItemTemplate>
-                                <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" />
+                                <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
+                                                CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
                                 <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" 
-                                    CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
+                                                CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
 
