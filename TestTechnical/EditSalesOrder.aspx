@@ -33,7 +33,7 @@
 
         .body-panel {
             background-color: steelblue;
-            padding: 20px;
+            padding: 10px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
@@ -62,7 +62,7 @@
         <!--Detail Line-->
         <div class="row line-panel px-3 py-2 mb-3">
             <div class="col-md-12">
-                <asp:Label runat="server" Text="Sales Order Informartion" ForeColor="White" Font-Bold="true" Font-Size="Large"></asp:Label>
+                <asp:Label runat="server" Text="Sales Order Informartion " ForeColor="White" Font-Bold="true" Font-Size="Large"></asp:Label>
                 <i class="fas fa-angles-down text-white"></i>
 
             </div>
@@ -108,8 +108,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -117,14 +115,56 @@
         <!--Detail Line-->
         <div class="row line-panel px-3 py-2 mb-3">
             <div class="col-md-12">
-                <asp:Label runat="server" Text="Detail Item Informartion" ForeColor="White" Font-Bold="true" Font-Size="Large"></asp:Label>
+                <asp:Label runat="server" Text="Detail Item Informartion " ForeColor="White" Font-Bold="true" Font-Size="Large"></asp:Label>
                 <i class="fas fa-angles-down text-white"></i>
-
             </div>
         </div>
 
+        <!-- GridView -->
+        <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ITEM_ID"
+            AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SO_Item" BorderStyle="None">
+            <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
+            <RowStyle HorizontalAlign="Center" />
 
+            <Columns>
+                <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center" ItemStyle-Width="5%">
+                    <ItemTemplate>
+                        <asp:Label ID="lblRowNumber" Text='<%# Container.DataItemIndex + 1 %>' runat="server" />
+                    </ItemTemplate>
+                </asp:TemplateField>
 
+                <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
+                            CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                        <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
+                            CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+
+                        <asp:LinkButton runat="server" ID="btn_saveEdit" CssClass="fas fa-file-alt" Visible="false"
+                            CommandName="SaveEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                        <asp:LinkButton runat="server" ID="btn_cancelEdit" CssClass="fas fa-trash-alt" Visible="false"
+                            CommandName="CancelEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:BoundField DataField="ITEM_NAME" HeaderText="ITEM NAME" />
+                <asp:BoundField DataField="QUANTITY" HeaderText="QUANTITY" />
+                <asp:BoundField DataField="PRICE" HeaderText="PRICE" />
+
+                <asp:TemplateField HeaderText="TOTAL" FooterStyle-HorizontalAlign="Right">
+                    <ItemTemplate>
+                        <%# Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE")) %>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:Label ID="lblFooterTotalAmount" runat="server" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+            </Columns>
+            <RowStyle BackColor="White" />
+        </asp:GridView>
+        <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
+            SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]"></asp:SqlDataSource>
     </form>
 
     <!-- Bootstrap core JavaScript-->
