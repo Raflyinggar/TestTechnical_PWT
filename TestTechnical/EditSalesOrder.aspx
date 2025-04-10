@@ -20,7 +20,7 @@
 
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet" />
+        rel="stylesheet" /> 
 
     <!-- Custom styles for this template-->
     <link href="Theme/css/sb-admin-2.min.css" rel="stylesheet" />
@@ -119,66 +119,79 @@
                 <i class="fas fa-angles-down text-white"></i>
             </div>
         </div>
+
+        <!--Button Add Item-->
         <div class="col-md-12 d-flex p-3">
             <div>
                 <asp:Button runat="server" ID="btn_addNewSales" Text="Add Item" CssClass="btn" BackColor="#990033" ForeColor="White" />
             </div>
         </div>
 
-        <!-- GridView -->
-        <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ITEM_ID"
-            AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SO_Item" BorderStyle="None">
-            <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
-            <RowStyle HorizontalAlign="Center" />
+        <div class="col-md-12">
+            <!-- GridView -->
+            <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ITEM_ID"
+                AutoGenerateColumns="False" Width="100%" DataSourceID="SDS_SO_Item" BorderStyle="None">
+                <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
+                <RowStyle HorizontalAlign="Center" />
 
-            <Columns>
-                <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center" ItemStyle-Width="5%">
-                    <ItemTemplate>
-                        <asp:Label ID="lblRowNumber" Text='<%# Container.DataItemIndex + 1 %>' runat="server" />
-                    </ItemTemplate>
-                </asp:TemplateField>
+                <Columns>
+                    <asp:TemplateField HeaderText="NO" ItemStyle-HorizontalAlign="center" ItemStyle-Width="5%">
+                        <ItemTemplate>
+                            <asp:Label ID="lblRowNumber" Text='<%# Container.DataItemIndex + 1 %>' runat="server" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
-                <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
+                    <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
 
-                    <ItemTemplate>
-                        <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
-                            CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
-                        <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
-                            CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                        <ItemTemplate>
+                            <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
+                                CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                            <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
+                                CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
 
-                        <asp:LinkButton runat="server" ID="btn_saveEdit" CssClass="fas fa-file-alt" Visible="false"
-                            CommandName="SaveEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
-                        <asp:LinkButton runat="server" ID="btn_cancelEdit" CssClass="fas fa-trash-alt" Visible="false"
-                            CommandName="CancelEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
+                            <asp:LinkButton runat="server" ID="btn_saveEdit" CssClass="fas fa-file-alt" Visible="false"
+                                CommandName="SaveEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                            <asp:LinkButton runat="server" ID="btn_cancelEdit" CssClass="fas fa-trash-alt" Visible="false"
+                                CommandName="CancelEditSalesOrder" CommandArgument='<%# Eval("SO_ITEM_ID") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
-                <asp:BoundField DataField="ITEM_NAME" HeaderText="ITEM NAME" />
-                <asp:BoundField DataField="QUANTITY" HeaderText="QUANTITY" />
+                    <asp:BoundField DataField="ITEM_NAME" HeaderText="ITEM NAME" />
+                    <asp:BoundField DataField="QUANTITY" HeaderText="QUANTITY" />
 
-                <asp:TemplateField HeaderText="PRICE">
-                    <ItemTemplate>
-                        <asp:Label runat="server" ID="lbl_price"
-                            Text='<%# string.Format("{0:N2}", Eval("PRICE")).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
+                    <asp:TemplateField HeaderText="PRICE">
+                        <ItemTemplate>
+                            <asp:Label runat="server" ID="lbl_price"
+                                Text='<%# string.Format("{0:N2}", Eval("PRICE")).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
-                <asp:TemplateField HeaderText="TOTAL" FooterStyle-HorizontalAlign="Right">
-                    <ItemTemplate>
-                        <asp:Label runat="server" ID="lbl_total"
-                            Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
-                    </ItemTemplate>
+                    <asp:TemplateField HeaderText="TOTAL" FooterStyle-HorizontalAlign="Right">
+                        <ItemTemplate>
+                            <asp:Label runat="server" ID="lbl_total"
+                                Text='<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("QUANTITY")) * Convert.ToDecimal(Eval("PRICE"))).Replace(",", "#").Replace(".", ",").Replace("#", ".") %>' />
+                        </ItemTemplate>
 
-                    <FooterTemplate>
-                        <asp:Label ID="lblFooterTotalAmount" runat="server" />
-                    </FooterTemplate>
+                        <FooterTemplate>
+                            <asp:Label ID="lblFooterTotalAmount" runat="server" />
+                        </FooterTemplate>
 
-                </asp:TemplateField>
-            </Columns>
-            <RowStyle BackColor="White" />
-        </asp:GridView>
-        <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
-            SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]"></asp:SqlDataSource>
+                    </asp:TemplateField>
+                </Columns>
+                <RowStyle BackColor="White" />
+            </asp:GridView>
+            <asp:SqlDataSource runat="server" ID="SDS_SO_Item" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
+                SelectCommand="SELECT [SO_ITEM_ID], [SO_ORDER_ID], [ITEM_NAME], [QUANTITY], [PRICE] FROM [Test_Profescipta].[dbo].[SO_ITEM]"></asp:SqlDataSource>
+        </div>
+
+        <!--Button Add Item-->
+        <div class="col-md-12 d-flex p-3 fa-align-center">
+            <div>
+                <asp:Button runat="server" ID="btn_saveAll" Text="Save" CssClass="btn" BackColor="#990033" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_cancelAll" Text="Cancel" CssClass="btn" BackColor="#000066" ForeColor="White" />
+            </div>
+        </div>
+
     </form>
 
     <!-- Bootstrap core JavaScript-->
