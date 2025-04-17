@@ -101,9 +101,9 @@
                         <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Right" ItemStyle-CssClass="text-center" ItemStyle-Width="10%">
                             <ItemTemplate>
                                 <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt"
-                                                CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
-                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" 
-                                                CommandName="DeleteSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
+                                    CommandName="EditSalesOrder" CommandArgument='<%# Eval("SO_ORDER_ID") %>' />
+                                <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt"
+                                    CommandName="Delete" OnClientClick="return confirm('Data Akan Terhapus?');"/>
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -116,13 +116,21 @@
                 <asp:SqlDataSource runat="server" ID="SDS_SalesOrder" ConnectionString="<%$ ConnectionStrings:DefaultConnections%>"
                     SelectCommand="SELECT [SO_ORDER_ID], [ORDER_NO], CONVERT(varchar(10), [ORDER_DATE],120) as ORDER_DATE, [COM_CUSTOMER_ID], [ADDRESS] FROM [Test_Profescipta].[dbo].[SO_ORDER]
                                    WHERE ([ORDER_NO]LIKE '%'+ @search +'%' OR [ADDRESS] LIKE '%'+ @search +'%')"
-                    FilterExpression=" ORDER_DATE LIKE '{0}'">
+                    FilterExpression=" ORDER_DATE LIKE '{0}'"
+                    DeleteCommand="DELETE FROM [dbo].[SO_ITEM] WHERE SO_ORDER_ID = @SO_ORDER_ID;
+                                   DELETE FROM [dbo].[SO_ORDER] WHERE SO_ORDER_ID = @SO_ORDER_ID">
                     <FilterParameters>
                         <asp:ControlParameter ControlID="tb_searchDate" Name="ORDER_DATE" Type="String" />
                     </FilterParameters>
+
                     <SelectParameters>
                         <asp:ControlParameter ControlID="tb_search" Name="search" PropertyName="text" Type="String" DefaultValue="%" />
                     </SelectParameters>
+
+                    <DeleteParameters>
+                        <asp:Parameter Name="SO_ORDER_ID" Type="String" />
+                    </DeleteParameters>
+
                 </asp:SqlDataSource>
             </div>
         </div>
