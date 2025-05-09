@@ -134,10 +134,10 @@
             </div>
         </div>
 
+        <!-- GridView -->
         <div class="col-md-12">
-            <!-- GridView -->
             <asp:GridView runat="server" ID="gv_so_item" AllowPaging="true" DataKeyNames="SO_ITEM_ID"
-                            AutoGenerateColumns="False" Width="100%" BorderStyle="None" DataSourceID="SDS_SO_Item">
+                AutoGenerateColumns="False" Width="100%" BorderStyle="None" DataSourceID="SDS_SO_Item">
                 <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Center" />
                 <RowStyle HorizontalAlign="Center" />
 
@@ -152,7 +152,7 @@
                         <ItemTemplate>
                             <asp:LinkButton runat="server" ID="btn_editSales" CssClass="fas fa-file-alt" CommandName="Edit" />
                             <asp:LinkButton runat="server" ID="btn_deleteSales" CssClass="fas fa-trash-alt" CommandName="Delete"
-                                            OnClientClick="return confirm('Data Akan Terhapus?');"/>
+                                OnClientClick="return confirm('Data Akan Terhapus?');" />
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:LinkButton runat="server" ID="btn_saveEdit" CommandName="Update" CssClass="fas fa-file-archive" />
@@ -237,11 +237,9 @@
         <!--Button Add Item-->
         <div class="col-md-12 d-flex p-3 fa-align-center">
             <div>
-                <asp:Button runat="server" ID="btn_saveAll" Text="Save" CssClass="btn" BackColor="#990033" ForeColor="White" />
-                <asp:Button runat="server" ID="btn_cancelAll" Text="Cancel" CssClass="btn" BackColor="#000066" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_saveAll" Text="Save" OnClick="btn_saveAll_Click" CssClass="btn" BackColor="#990033" ForeColor="White" />
+                <asp:Button runat="server" ID="btn_cancelAll" Text="Cancel" OnClick="btn_cancelAll_Click" CssClass="btn" BackColor="#000066" ForeColor="White" />
             </div>
-        </div>
-        <div>
         </div>
     </form>
 
